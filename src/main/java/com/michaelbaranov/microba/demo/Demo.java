@@ -1,7 +1,6 @@
 package com.michaelbaranov.microba.demo;
 
 import com.michaelbaranov.microba.calendar.CalendarPane;
-import com.michaelbaranov.microba.calendar.DatePicker;
 import com.michaelbaranov.microba.calendar.HolidayPolicy;
 import com.michaelbaranov.microba.common.AbstractPolicy;
 
@@ -10,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +28,6 @@ public class Demo extends JApplet {
 
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("CalendarPane", buildCalendarPaneTab());
-    tabs.addTab("DatePicker", buildDatePickerTab());
 
     frame.getContentPane().add(tabs, BorderLayout.CENTER);
     frame.setSize(500, 300);
@@ -97,44 +94,5 @@ public class Demo extends JApplet {
 
     return panel;
 
-  }
-
-  private JComponent buildDatePickerTab() {
-    JPanel panel = new JPanel();
-    final DatePicker datePicker = new DatePicker();
-    // datePicker.setDateFormat(new SimpleDateFormat("HH dd yyyy"));
-    datePicker.setDateFormat(SimpleDateFormat.getDateTimeInstance());
-    // datePicker.setStripTime(false);
-    datePicker.setEnabled(false);
-    datePicker.setKeepTime(true);
-    datePicker.setStripTime(false);
-    datePicker.setShowNumberOfWeek(true);
-    // datePicker.setEnabled(false);
-    // datePicker.setPickerStyle(DatePicker.PICKER_STYLE_BUTTON);
-    // datePicker.showButtonOnly(false);
-    // datePicker.setToolTipText("hello!!!!");
-    // datePicker.setShowNumberOfWeek(true);
-
-    Map ov = new HashMap();
-
-    ov.put(CalendarPane.COLOR_CALENDAR_GRID_FOREGROUND_ENABLED,
-            Color.ORANGE);
-
-    datePicker.setColorOverrideMap(ov);
-
-    panel.setLayout(new GridBagLayout());
-    panel.add(datePicker, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-            GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
-            5, 5, 5, 5), 0, 0));
-
-    datePicker.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        System.out.println("DatePicker:" + datePicker.getDate());
-
-      }
-    });
-
-    return panel;
   }
 }

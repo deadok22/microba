@@ -104,10 +104,6 @@ class CalendarGridPanel extends JPanel implements FocusListener,
 		this.focusDate = getFocusDateForDate(date);
 		this.vetoPolicy = vetoDateModel;
 		this.holidayPolicy = holidayPolicy;
-		if (this.vetoPolicy != null)
-			this.vetoPolicy.addVetoPolicyListener(this);
-		if (this.holidayPolicy != null)
-			this.holidayPolicy.addVetoPolicyListener(this);
 		this.addPropertyChangeListener(this);
 
 		setLayout(new GridLayout(6, 7, 2, 2));
@@ -528,12 +524,6 @@ class CalendarGridPanel extends JPanel implements FocusListener,
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(PROPERTY_NAME_VETO_POLICY)) {
-			VetoPolicy oldValue = (VetoPolicy) evt.getOldValue();
-			VetoPolicy newValue = (VetoPolicy) evt.getOldValue();
-			if (oldValue != null)
-				oldValue.removeVetoPolicyListener(this);
-			if (newValue != null)
-				newValue.addVetoPolicyListener(this);
 			reflectData();
 		}
 	}

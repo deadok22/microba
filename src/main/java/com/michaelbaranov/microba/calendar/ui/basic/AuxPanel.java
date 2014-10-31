@@ -1,28 +1,18 @@
 package com.michaelbaranov.microba.calendar.ui.basic;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import com.michaelbaranov.microba.calendar.CalendarResources;
+import com.michaelbaranov.microba.calendar.VetoPolicy;
+import com.michaelbaranov.microba.common.PolicyEvent;
+import com.michaelbaranov.microba.common.PolicyListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import com.michaelbaranov.microba.calendar.CalendarResources;
-import com.michaelbaranov.microba.calendar.VetoPolicy;
-import com.michaelbaranov.microba.common.PolicyEvent;
-import com.michaelbaranov.microba.common.PolicyListener;
+import java.util.*;
 
 class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener {
 
@@ -67,8 +57,6 @@ class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener 
 		this.showTodayBtn = showTodayBtn;
 		this.showNoneButton = showNoneButton;
 		this.resources = resources;
-		if (vetoModel != null)
-			vetoModel.addVetoPolicyListener(this);
 
 		setLayout(new GridBagLayout());
 
@@ -134,12 +122,6 @@ class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener 
 			noneButton.setEnabled(value.booleanValue());
 		}
 		if (evt.getPropertyName().equals(PROPERTY_NAME_VETO_MODEL)) {
-			VetoPolicy oldValue = (VetoPolicy) evt.getOldValue();
-			VetoPolicy newValue = (VetoPolicy) evt.getOldValue();
-			if (oldValue != null)
-				oldValue.removeVetoPolicyListener(this);
-			if (newValue != null)
-				newValue.addVetoPolicyListener(this);
 			validateAgainstVeto();
 		}
 

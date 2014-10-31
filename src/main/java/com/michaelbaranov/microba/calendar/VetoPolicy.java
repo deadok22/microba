@@ -2,8 +2,6 @@ package com.michaelbaranov.microba.calendar;
 
 import java.util.Calendar;
 
-import com.michaelbaranov.microba.common.Policy;
-
 /**
  * This interface is used by {@link CalendarPane} and {@link DatePicker} to
  * provide means to restrict dates in a control.
@@ -11,7 +9,7 @@ import com.michaelbaranov.microba.common.Policy;
  * @author Michael Baranov
  * 
  */
-public interface VetoPolicy extends Policy {
+public interface VetoPolicy {
 
 	/**
 	 * This method is used to check if a date is restricted. Restricted dates

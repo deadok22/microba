@@ -2,8 +2,6 @@ package com.michaelbaranov.microba.calendar;
 
 import java.util.Calendar;
 
-import com.michaelbaranov.microba.common.Policy;
-
 /**
  * This interface is used by {@link CalendarPane} and {@link DatePicker} to
  * provide means to define hollidays and optionally provide descriptions to
@@ -12,7 +10,7 @@ import com.michaelbaranov.microba.common.Policy;
  * @author Michael Baranov
  * 
  */
-public interface HolidayPolicy extends Policy {
+public interface HolidayPolicy {
 	/**
 	 * This method is used to check if a date is a holliday. Holliday dates are
 	 * displayed by contols in a special way.

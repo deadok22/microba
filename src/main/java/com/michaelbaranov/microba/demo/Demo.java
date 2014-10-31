@@ -2,7 +2,6 @@ package com.michaelbaranov.microba.demo;
 
 import com.michaelbaranov.microba.calendar.CalendarPane;
 import com.michaelbaranov.microba.calendar.HolidayPolicy;
-import com.michaelbaranov.microba.common.AbstractPolicy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +41,7 @@ public class Demo extends JApplet {
     super.stop();
   }
 
-  private class Hol extends AbstractPolicy implements HolidayPolicy {
+  private class Hol implements HolidayPolicy {
     public String getHollidayName(Object source, Calendar date) {
       return null;
     }
@@ -60,7 +59,6 @@ public class Demo extends JApplet {
     JPanel panel = new JPanel();
     final CalendarPane calendarPane = new CalendarPane();
 
-//		calendarPane.setEnabled(false);
     calendarPane.setHolidayPolicy(new Hol());
 
     try {

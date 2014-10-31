@@ -71,16 +71,6 @@ public class CalendarPane extends JComponent {
   public static final String PROPERTY_NAME_HOLIDAY_POLICY = "holidayPolicy";
 
   /**
-   * The name of a "resources" property.
-   */
-  public static final String PROPERTY_NAME_RESOURCES = "resources";
-
-  /**
-   * The name of a "resources" property.
-   */
-  public static final String PROPERTY_NAME_SHOW_NUMBER_WEEK = "showNumberOfWeek";
-
-  /**
    * The name of a "stripTime" property.
    */
   public static final String PROPERTY_NAME_STRIP_TIME = "stripTime";
@@ -116,8 +106,6 @@ public class CalendarPane extends JComponent {
   private boolean showNoneButton;
 
   private int focusLostBehavior;
-
-  private boolean showNumberOfWeek;
 
   private boolean stripTime;
 
@@ -464,16 +452,6 @@ public class CalendarPane extends JComponent {
   }
 
   /**
-   * Is the number of every week visible?
-   *
-   * @return <code>true</code> if the number of every week is visible,
-   * <code>false</code> otherwise
-   */
-  public boolean isShowNumberOfWeek() {
-    return showNumberOfWeek;
-  }
-
-  /**
    * Is time protion of the date automatically striped, based on current
    * locale and ime zone?
    *
@@ -495,20 +473,6 @@ public class CalendarPane extends JComponent {
    */
   public void setStripTime(boolean stripTime) {
     this.stripTime = stripTime;
-  }
-
-  /**
-   * Shows or hides the the number of every week.
-   * <p/>
-   * The number of week is based on the current locale for the component.
-   *
-   * @param visible <code>true</code> to show the the number of every week
-   *                <code>false</code> to hide
-   */
-  public void setShowNumberOfWeek(boolean visible) {
-    boolean old = this.showNumberOfWeek;
-    this.showNumberOfWeek = visible;
-    firePropertyChange(PROPERTY_NAME_SHOW_NUMBER_WEEK, old, visible);
   }
 
   /**

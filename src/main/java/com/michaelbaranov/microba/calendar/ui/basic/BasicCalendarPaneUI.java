@@ -6,7 +6,6 @@ import com.michaelbaranov.microba.calendar.VetoPolicy;
 import com.michaelbaranov.microba.calendar.ui.CalendarPaneUI;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -34,17 +33,11 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
   protected CalendarGridPanel gridPanel;
 
-  protected CalendarNumberOfWeekPanel numberOfWeekPanel;
-
   protected CalendarHeader headerPanel;
 
   protected Set focusableComponents = new HashSet();
 
   protected ComponentListener componentListener;
-
-  public static ComponentUI createUI(JComponent c) {
-    return new BasicCalendarPaneUI();
-  }
 
   public void installUI(JComponent component) {
     peer = (CalendarPane) component;
@@ -141,9 +134,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
             .getLocale(), peer.getZone(), peer.getVetoPolicy(), peer
             .getHolidayPolicy());
 
-    numberOfWeekPanel = new CalendarNumberOfWeekPanel(peer.getDate(), peer
-            .getLocale(), peer.getZone());
-
     focusableComponents.addAll(classicPanel.getFocusableComponents());
     focusableComponents.addAll(modernPanel.getFocusableComponents());
     focusableComponents.addAll(auxPanel.getFocusableComponents());
@@ -164,7 +154,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     modernPanel.setEnabled(peer.isEnabled());
     headerPanel.setEnabled(peer.isEnabled());
     auxPanel.setEnabled(peer.isEnabled());
-    numberOfWeekPanel.setEnabled(peer.isEnabled());
     gridPanel.setEnabled(peer.isEnabled());
 
   }
@@ -186,8 +175,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     headerPanel = null;
     auxPanel = null;
     gridPanel = null;
-    numberOfWeekPanel = null;
-
   }
 
   protected void addNestedComponents() {
@@ -207,11 +194,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     peer.add(headerPanel, new GridBagConstraints(1, 1, 1, 1, 1, 0,
             GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
             new Insets(0, 0, 0, 0), 0, 0));
-    if (peer.isShowNumberOfWeek()) {
-      peer.add(numberOfWeekPanel, new GridBagConstraints(0, 2, 1, 1, 0,
-              1, GridBagConstraints.CENTER, GridBagConstraints.VERTICAL,
-              new Insets(0, 0, 0, 0), 0, 0));
-    }
     peer.add(gridPanel, new GridBagConstraints(1, 2, 1, 1, 1, 1,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(
             0, 0, 0, 0), 0, 0));
@@ -219,9 +201,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
       peer.add(auxPanel, new GridBagConstraints(0, 3, 2, 1, 1, 0,
               GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
               new Insets(0, 0, 0, 0), 0, 0));
-    }
-    if (peer.isShowNumberOfWeek()) {
-      // TODO:
     }
     peer.revalidate();
     peer.repaint();
@@ -241,7 +220,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
     gridPanel.setBaseDate(baseDate);
     gridPanel.setDate(date);
-    numberOfWeekPanel.setBaseDate(baseDate);
   }
 
   protected void widgetLocaleChanged(Locale newValue) {
@@ -250,7 +228,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     gridPanel.setLocale(newValue);
     headerPanel.setLocale(newValue);
     auxPanel.setLocale(newValue);
-    numberOfWeekPanel.setLocale(newValue);
   }
 
   protected void widgetZoneChanged(TimeZone zone) {
@@ -259,7 +236,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     gridPanel.setZone(zone);
     headerPanel.setZone(zone);
     auxPanel.setZone(zone);
-    numberOfWeekPanel.setZone(zone);
   }
 
   public void commit() throws PropertyVetoException {
@@ -305,7 +281,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
       modernPanel.setEnabled(value);
       headerPanel.setEnabled(value);
       auxPanel.setEnabled(value);
-      numberOfWeekPanel.setEnabled(value);
       gridPanel.setEnabled(value);
     }
     else if (evt.getPropertyName().equals(
@@ -321,10 +296,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
             CalendarPane.PROPERTY_NAME_SHOW_NONE_BTN)) {
       boolean value = ((Boolean) evt.getNewValue()).booleanValue();
       auxPanel.setShowNoneButton(value);
-    }
-    else if (evt.getPropertyName().equals(
-            CalendarPane.PROPERTY_NAME_SHOW_NUMBER_WEEK)) {
-      addNestedComponents();
     }
     else if (evt.getPropertyName().equals("focusable")) {
       Boolean value = (Boolean) evt.getNewValue();
@@ -393,8 +364,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
         gridPanel.setBaseDate(newValue);
         classicPanel.setDate(newValue);
-        numberOfWeekPanel.setBaseDate(newValue);
-
       }
       if (evt.getSource() == classicPanel
               && evt.getPropertyName().equals(
@@ -403,8 +372,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
         gridPanel.setBaseDate(newValue);
         modernPanel.setDate(newValue);
-        numberOfWeekPanel.setBaseDate(newValue);
-
       }
       if (evt.getSource() == auxPanel
               && evt.getPropertyName()
@@ -414,7 +381,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
         gridPanel.setDate(date);
         peer.commitEdit();
       }
-
     }
   }
 

@@ -23,8 +23,7 @@ import java.util.TimeZone;
  *
  * @author Michael Baranov
  */
-public class CalendarPane extends JComponent implements
-        CalendarColors {
+public class CalendarPane extends JComponent {
 
   /**
    * The name of a "date" property.

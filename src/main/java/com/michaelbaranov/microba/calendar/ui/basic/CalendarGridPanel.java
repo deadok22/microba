@@ -1,42 +1,17 @@
 package com.michaelbaranov.microba.calendar.ui.basic;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
-import com.michaelbaranov.microba.Microba;
-import com.michaelbaranov.microba.calendar.CalendarColors;
 import com.michaelbaranov.microba.calendar.CalendarPane;
 import com.michaelbaranov.microba.calendar.HolidayPolicy;
 import com.michaelbaranov.microba.calendar.VetoPolicy;
 import com.michaelbaranov.microba.common.PolicyEvent;
 import com.michaelbaranov.microba.common.PolicyListener;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.*;
 
 class CalendarGridPanel extends JPanel implements FocusListener,
 		PolicyListener, PropertyChangeListener, MouseListener, KeyListener {
@@ -108,56 +83,24 @@ class CalendarGridPanel extends JPanel implements FocusListener,
 
 		this.peer = peer;
 
-		focusColor = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_FOCUS, peer, UIManager
-						.getColor("TabbedPane.focus"));
-		restrictedColor = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_RESTRICTED, peer, Color.RED);
-		gridBgEn = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_BACKGROUND_ENABLED, peer,
-				UIManager.getColor("TextField.background"));
-
-		gridBgDis = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_BACKGROUND_DISABLED, peer,
-				UIManager.getColor("TextField.background"));
-
-		gridFgEn = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_FOREGROUND_ENABLED, peer,
-				UIManager.getColor("TextField.foreground"));
-
-		gridFgDis = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_FOREGROUND_DISABLED, peer,
-				UIManager.getColor("controlText"));
-
-		selBgEn = Microba
-				.getOverridenColor(
-						CalendarColors.COLOR_CALENDAR_GRID_SELECTION_BACKGROUND_ENABLED,
-						peer, UIManager
-								.getColor("ComboBox.selectionBackground"));
-		selBgDis = Microba
-				.getOverridenColor(
-						CalendarColors.COLOR_CALENDAR_GRID_SELECTION_BACKGROUND_DISABLED,
-						peer, UIManager
-								.getColor("ComboBox.selectionBackground"));
-
-		wkFgDis = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_WEEKEND_FOREGROUND_DISABLED,
-				peer, gridFgDis);
-		wkFgEn = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_WEEKEND_FOREGROUND_ENABLED,
-				peer, Color.RED);
-		holFgDis = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_HOLIDAY_FOREGROUND_DISABLED,
-				peer, gridFgDis);
-		holFgEn = Microba.getOverridenColor(
-				CalendarColors.COLOR_CALENDAR_GRID_HOLIDAY_FOREGROUND_ENABLED,
-				peer, Color.RED);
+		focusColor = UIManager.getColor("TabbedPane.focus");
+		restrictedColor = Color.RED;
+		gridBgEn = UIManager.getColor("TextField.background");
+		gridBgDis = UIManager.getColor("TextField.background");
+		gridFgEn = UIManager.getColor("TextField.foreground");
+		gridFgDis = UIManager.getColor("controlText");
+		selBgEn = UIManager.getColor("ComboBox.selectionBackground");
+		selBgDis = UIManager.getColor("ComboBox.selectionBackground");
+		wkFgDis = gridFgDis;
+		wkFgEn = Color.RED;
+		holFgDis = gridFgDis;
+		holFgEn = Color.RED;
 
 		this.locale = locale;
 		this.zone = zone;
 		this.date = date;
 		this.baseDate = date == null ? new Date() : date;
-		this.explicitDateSetToNullFlag = date == null ? true : false;
+		this.explicitDateSetToNullFlag = date == null;
 		this.focusDate = getFocusDateForDate(date);
 		this.vetoPolicy = vetoDateModel;
 		this.holidayPolicy = holidayPolicy;

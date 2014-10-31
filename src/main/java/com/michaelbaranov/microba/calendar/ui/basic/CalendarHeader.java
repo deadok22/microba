@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import com.michaelbaranov.microba.Microba;
 import com.michaelbaranov.microba.calendar.CalendarPane;
 import com.michaelbaranov.microba.calendar.HolidayPolicy;
 
@@ -45,24 +44,12 @@ class CalendarHeader extends JPanel {
 			TimeZone zone, HolidayPolicy holidayPolicy) {
 		super();
 
-		backgroundColorActive = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_BACKGROUND_ENABLED, peer,
-				UIManager.getColor("activeCaption"));
-		backgroundColorInactive = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_BACKGROUND_DISABLED, peer,
-				UIManager.getColor("inactiveCaption"));
-		foregroundColorActive = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_FOREGROUND_ENABLED, peer,
-				UIManager.getColor("controlText"));
-		foregroundColorInactive = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_FOREGROUND_DISABLED, peer,
-				UIManager.getColor("textInactiveText"));
-		foregroundColorWeekendEnabled = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_FOREGROUND_WEEKEND_ENABLED,
-				peer, Color.RED);
-		foregroundColorWeekendDisabled = Microba.getOverridenColor(
-				CalendarPane.COLOR_CALENDAR_HEADER_FOREGROUND_WEEKEND_DISABLED,
-				peer, foregroundColorInactive);
+		backgroundColorActive = UIManager.getColor("activeCaption");
+		backgroundColorInactive = UIManager.getColor("inactiveCaption");
+		foregroundColorActive = UIManager.getColor("controlText");
+		foregroundColorInactive = UIManager.getColor("textInactiveText");
+		foregroundColorWeekendEnabled = Color.RED;
+		foregroundColorWeekendDisabled = foregroundColorInactive;
 
 		this.locale = locale;
 		this.zone = zone;

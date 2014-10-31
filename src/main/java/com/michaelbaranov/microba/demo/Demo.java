@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Demo extends JApplet {
 
@@ -64,13 +62,6 @@ public class Demo extends JApplet {
 
 //		calendarPane.setEnabled(false);
     calendarPane.setHolidayPolicy(new Hol());
-
-    Map ov = new HashMap();
-
-    ov.put(CalendarPane.COLOR_CALENDAR_GRID_FOREGROUND_ENABLED,
-            Color.ORANGE);
-
-    calendarPane.setColorOverrideMap(ov);
 
     try {
       calendarPane.setDate(new Date());

@@ -109,8 +109,6 @@ public class CalendarPane extends JComponent {
 
   private HolidayPolicy holidayPolicy;
 
-  private CalendarResources resources;
-
   private int style;
 
   private boolean showTodayButton;
@@ -176,7 +174,6 @@ public class CalendarPane extends JComponent {
     this.showTodayButton = true;
     this.showNoneButton = true;
     this.vetoPolicy = null;
-    this.resources = new DefaultCalendarResources();
     this.stripTime = true;
 
     // forward date property change to action event
@@ -412,33 +409,6 @@ public class CalendarPane extends JComponent {
     int old = this.focusLostBehavior;
     this.focusLostBehavior = behavior;
     firePropertyChange(PROPERTY_NAME_FOCUS_LOST_BEHAVIOR, old, behavior);
-  }
-
-  /**
-   * Resurns current calendar resources model.
-   * <p/>
-   * The model is used to query localized resources for the control.
-   *
-   * @return current calendar resources model
-   * @see CalendarResources
-   */
-  public CalendarResources getResources() {
-    return resources;
-  }
-
-  /**
-   * Sets current calendar resources model.
-   * <p/>
-   * The model is used to query localized resources for the control.
-   *
-   * @param resources a calendar resources model to set. Should not be
-   *                  <code>null</code>
-   * @see CalendarResources
-   */
-  public void setResources(CalendarResources resources) {
-    CalendarResources old = this.resources;
-    this.resources = resources;
-    firePropertyChange(PROPERTY_NAME_RESOURCES, old, resources);
   }
 
   /**

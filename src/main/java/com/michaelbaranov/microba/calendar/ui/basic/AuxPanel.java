@@ -1,6 +1,5 @@
 package com.michaelbaranov.microba.calendar.ui.basic;
 
-import com.michaelbaranov.microba.calendar.CalendarResources;
 import com.michaelbaranov.microba.calendar.VetoPolicy;
 import com.michaelbaranov.microba.common.PolicyEvent;
 import com.michaelbaranov.microba.common.PolicyListener;
@@ -16,203 +15,176 @@ import java.util.*;
 
 class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener {
 
-	public static final String PROPERTY_NAME_LOCALE = "locale";
+  public static final String PROPERTY_NAME_LOCALE = "locale";
 
-	public static final String PROPERTY_NAME_DATE = "date";
+  public static final String PROPERTY_NAME_DATE = "date";
 
-	public static final String PROPERTY_NAME_ZONE = "zone";
+  public static final String PROPERTY_NAME_ZONE = "zone";
 
-	public static final String PROPERTY_NAME_RESOURCES = "resources";
+  public static final String PROPERTY_NAME_VETO_MODEL = "vetoModel";
 
-	public static final String PROPERTY_NAME_VETO_MODEL = "vetoModel";
+  private Locale locale;
 
-	private Locale locale;
+  private TimeZone zone;
 
-	private TimeZone zone;
+  private JButton todayButton;
 
-	private JButton todayButton;
+  private JButton noneButton;
 
-	private JButton noneButton;
+  private DateFormat fullDateFormat;
 
-	private DateFormat fullDateFormat;
+  private Date currentDate;
 
-	private Date currentDate;
+  private Set focusableComponents = new HashSet();
 
-	private Set focusableComponents = new HashSet();
+  private VetoPolicy vetoModel;
 
-	private VetoPolicy vetoModel;
+  private boolean showTodayBtn;
 
-	private boolean showTodayBtn;
+  private boolean showNoneButton;
 
-	private CalendarResources resources;
+  public AuxPanel(Locale locale, TimeZone zone, VetoPolicy vetoModel,
+                  boolean showTodayBtn, boolean showNoneButton) {
+    this.locale = locale;
+    this.zone = zone;
+    this.vetoModel = vetoModel;
+    this.showTodayBtn = showTodayBtn;
+    this.showNoneButton = showNoneButton;
 
-	private boolean showNoneButton;
+    setLayout(new GridBagLayout());
 
-	public AuxPanel(Locale locale, TimeZone zone, VetoPolicy vetoModel,
-			boolean showTodayBtn, boolean showNoneButton,
-			CalendarResources resources) {
-		this.locale = locale;
-		this.zone = zone;
-		this.vetoModel = vetoModel;
-		this.showTodayBtn = showTodayBtn;
-		this.showNoneButton = showNoneButton;
-		this.resources = resources;
+    todayButton = new JButton();
+    todayButton.setBorderPainted(false);
+    todayButton.setContentAreaFilled(false);
+    todayButton.setVisible(showTodayBtn);
 
-		setLayout(new GridBagLayout());
+    noneButton = new JButton("none");
+    noneButton.setBorderPainted(false);
+    noneButton.setContentAreaFilled(false);
+    noneButton.setVisible(showNoneButton);
 
-		todayButton = new JButton();
-		todayButton.setBorderPainted(false);
-		todayButton.setContentAreaFilled(false);
-		todayButton.setVisible(showTodayBtn);
+    add(todayButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
+            GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,
+            0, 0, 0), 0, 0));
+    add(noneButton, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
+            GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0,
+            0, 0, 0), 0, 0));
 
-		noneButton = new JButton();
-		noneButton.setBorderPainted(false);
-		noneButton.setContentAreaFilled(false);
-		noneButton.setVisible(showNoneButton);
+    currentDate = new Date();
+    validateAgainstVeto();
+    createLocaleAndZoneSensitive();
+    reflectData();
 
-		add(todayButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0,
-						0, 0, 0), 0, 0));
-		add(noneButton, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
-				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0,
-						0, 0, 0), 0, 0));
+    todayButton.addActionListener(new ActionListener() {
 
-		currentDate = new Date();
-		validateAgainstVeto();
-		createLocaleAndZoneSensitive();
-		reflectData();
+      public void actionPerformed(ActionEvent e) {
+        currentDate = new Date();
+        firePropertyChange(PROPERTY_NAME_DATE, null, currentDate);
+      }
+    });
+    noneButton.addActionListener(new ActionListener() {
 
-		todayButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        firePropertyChange(PROPERTY_NAME_DATE, null, null);
+      }
+    });
 
-			public void actionPerformed(ActionEvent e) {
-				currentDate = new Date();
-				firePropertyChange(PROPERTY_NAME_DATE, null, currentDate);
-			}
-		});
-		noneButton.addActionListener(new ActionListener() {
+    focusableComponents.add(todayButton);
+    this.addPropertyChangeListener(this);
+  }
 
-			public void actionPerformed(ActionEvent e) {
-				firePropertyChange(PROPERTY_NAME_DATE, null, null);
-			}
-		});
+  public void propertyChange(PropertyChangeEvent evt) {
+    if (evt.getPropertyName().equals("focusable")) {
+      Boolean value = (Boolean) evt.getNewValue();
+      todayButton.setFocusable(value.booleanValue());
+      noneButton.setFocusable(value.booleanValue());
+    }
+    if (evt.getPropertyName().equals("enabled")) {
+      Boolean value = (Boolean) evt.getNewValue();
+      todayButton.setEnabled(value.booleanValue());
+      noneButton.setEnabled(value.booleanValue());
+    }
+    if (evt.getPropertyName().equals(PROPERTY_NAME_VETO_MODEL)) {
+      validateAgainstVeto();
+    }
 
-		focusableComponents.add(todayButton);
-		this.addPropertyChangeListener(this);
+  }
 
-		// Timer timer = new Timer(true);
-		// timer.schedule(new TimerTask() {
-		//
-		// public void run() {
-		// currentDate = new Date();
-		// validateAgainstVeto();
-		// }
-		// }, 0, 60000);
+  private void createLocaleAndZoneSensitive() {
+    fullDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+    fullDateFormat.setTimeZone(zone);
+  }
 
-	}
+  private void reflectData() {
+    todayButton.setText("today: " + fullDateFormat.format(currentDate));
+  }
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("focusable")) {
-			Boolean value = (Boolean) evt.getNewValue();
-			todayButton.setFocusable(value.booleanValue());
-			noneButton.setFocusable(value.booleanValue());
-		}
-		if (evt.getPropertyName().equals("enabled")) {
-			Boolean value = (Boolean) evt.getNewValue();
-			todayButton.setEnabled(value.booleanValue());
-			noneButton.setEnabled(value.booleanValue());
-		}
-		if (evt.getPropertyName().equals(PROPERTY_NAME_VETO_MODEL)) {
-			validateAgainstVeto();
-		}
+  public Locale getLocale() {
+    return locale;
+  }
 
-	}
+  public void setLocale(Locale locale) {
+    Locale old = this.locale;
+    this.locale = locale;
+    firePropertyChange(PROPERTY_NAME_LOCALE, old, locale);
+    createLocaleAndZoneSensitive();
+    reflectData();
+  }
 
-	private void createLocaleAndZoneSensitive() {
-		fullDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-		fullDateFormat.setTimeZone(zone);
-	}
+  public Collection getFocusableComponents() {
+    return focusableComponents;
+  }
 
-	private void reflectData() {
-		String today = resources.getResource(CalendarResources.KEY_TODAY,
-				locale);
-		String none = resources.getResource(CalendarResources.KEY_NONE, locale);
-		todayButton.setText(today + ": " + fullDateFormat.format(currentDate));
-		noneButton.setText(none);
+  public TimeZone getZone() {
+    return zone;
+  }
 
-	}
+  public void setZone(TimeZone zone) {
+    this.zone = zone;
+    createLocaleAndZoneSensitive();
+    reflectData();
+  }
 
-	public Locale getLocale() {
-		return locale;
-	}
+  public Date getDate() {
+    return currentDate;
+  }
 
-	public void setLocale(Locale locale) {
-		Locale old = this.locale;
-		this.locale = locale;
-		firePropertyChange(PROPERTY_NAME_LOCALE, old, locale);
-		createLocaleAndZoneSensitive();
-		reflectData();
-	}
+  public VetoPolicy getVetoModel() {
+    return vetoModel;
+  }
 
-	public Collection getFocusableComponents() {
-		return focusableComponents;
-	}
+  public void setVetoModel(VetoPolicy vetoModel) {
+    VetoPolicy old = this.vetoModel;
+    this.vetoModel = vetoModel;
+    firePropertyChange(PROPERTY_NAME_VETO_MODEL, old, vetoModel);
+  }
 
-	public TimeZone getZone() {
-		return zone;
-	}
+  public void policyChanged(PolicyEvent event) {
+    validateAgainstVeto();
+  }
 
-	public void setZone(TimeZone zone) {
-		this.zone = zone;
-		createLocaleAndZoneSensitive();
-		reflectData();
-	}
+  private void validateAgainstVeto() {
+    Calendar c = Calendar.getInstance(zone, locale);
+    c.setTime(currentDate);
+    if (vetoModel != null) {
+      todayButton.setEnabled(!vetoModel.isRestricted(this, c));
+      noneButton.setEnabled(!vetoModel.isRestrictNull(this));
+    }
+    else {
+      todayButton.setEnabled(this.isEnabled());
+      noneButton.setEnabled(this.isEnabled());
+    }
 
-	public Date getDate() {
-		return currentDate;
-	}
+  }
 
-	public VetoPolicy getVetoModel() {
-		return vetoModel;
-	}
+  public void setShowTodayBtn(boolean value) {
+    showTodayBtn = value;
+    todayButton.setVisible(showTodayBtn);
+  }
 
-	public void setVetoModel(VetoPolicy vetoModel) {
-		VetoPolicy old = this.vetoModel;
-		this.vetoModel = vetoModel;
-		firePropertyChange(PROPERTY_NAME_VETO_MODEL, old, vetoModel);
-	}
-
-	public void policyChanged(PolicyEvent event) {
-		validateAgainstVeto();
-	}
-
-	private void validateAgainstVeto() {
-		Calendar c = Calendar.getInstance(zone, locale);
-		c.setTime(currentDate);
-		if (vetoModel != null) {
-			todayButton.setEnabled(!vetoModel.isRestricted(this, c));
-			noneButton.setEnabled(!vetoModel.isRestrictNull(this));
-		} else {
-			todayButton.setEnabled(this.isEnabled());
-			noneButton.setEnabled(this.isEnabled());
-		}
-
-	}
-
-	public void setShowTodayBtn(boolean value) {
-		showTodayBtn = value;
-		todayButton.setVisible(showTodayBtn);
-	}
-
-	public void setResources(CalendarResources resources) {
-		CalendarResources old = this.resources;
-		this.resources = resources;
-		firePropertyChange(PROPERTY_NAME_RESOURCES, old, resources);
-		reflectData();
-	}
-
-	public void setShowNoneButton(boolean value) {
-		showNoneButton = value;
-		noneButton.setVisible(showNoneButton);
-	}
+  public void setShowNoneButton(boolean value) {
+    showNoneButton = value;
+    noneButton.setVisible(showNoneButton);
+  }
 
 }

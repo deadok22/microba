@@ -135,7 +135,7 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
     auxPanel = new AuxPanel(peer.getLocale(), peer.getZone(), peer
             .getVetoPolicy(), peer.isShowTodayButton(), peer
-            .isShowNoneButton(), peer.getResources());
+            .isShowNoneButton());
 
     gridPanel = new CalendarGridPanel(peer, peer.getDate(), peer
             .getLocale(), peer.getZone(), peer.getVetoPolicy(), peer
@@ -262,10 +262,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     numberOfWeekPanel.setZone(zone);
   }
 
-  protected void widgetResourceChanged() {
-    auxPanel.setResources(peer.getResources());
-  }
-
   public void commit() throws PropertyVetoException {
     peer.setDate(gridPanel.getDateToCommit());
   }
@@ -336,10 +332,6 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
       modernPanel.setFocusable(value.booleanValue());
       gridPanel.setFocusable(value.booleanValue());
       auxPanel.setFocusable(value.booleanValue());
-    }
-    else if (evt.getPropertyName().equals(
-            CalendarPane.PROPERTY_NAME_RESOURCES)) {
-      widgetResourceChanged();
     }
     else if (evt.getPropertyName()
             .equals("enabled"/* CalendarPane.PROPERTY_NAME_ENABLED */)) {

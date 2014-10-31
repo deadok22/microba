@@ -24,15 +24,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<dependencies>
-		<dependency>
-			<groupId>jgraph</groupId>
-			<artifactId>jgraph</artifactId>
-			<version>5.8.3.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
 	<build>
 		<resources>
 			<resource>
@@ -51,19 +42,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports></reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

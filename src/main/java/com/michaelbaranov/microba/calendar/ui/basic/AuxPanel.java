@@ -131,7 +131,7 @@ class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener 
     reflectData();
   }
 
-  public Collection getFocusableComponents() {
+  public Collection<? extends JComponent> getFocusableComponents() {
     return focusableComponents;
   }
 

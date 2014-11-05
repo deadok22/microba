@@ -46,7 +46,7 @@ public class Demo extends JApplet {
       return null;
     }
 
-    public boolean isHolliday(Object source, Calendar date) {
+    public boolean isHoliday(Object source, Calendar date) {
       return false;
     }
 

@@ -35,7 +35,7 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
 
   protected CalendarHeader headerPanel;
 
-  protected Set focusableComponents = new HashSet();
+  protected Set<JComponent> focusableComponents = new HashSet<JComponent>();
 
   protected ComponentListener componentListener;
 
@@ -276,7 +276,7 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
       headerPanel.setHolidayPolicy((HolidayPolicy) evt.getNewValue());
     }
     else if (evt.getPropertyName().equals("enabled")) {
-      boolean value = ((Boolean) evt.getNewValue()).booleanValue();
+      boolean value = (Boolean) evt.getNewValue();
       classicPanel.setEnabled(value);
       modernPanel.setEnabled(value);
       headerPanel.setEnabled(value);
@@ -290,19 +290,19 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     else if (evt.getPropertyName().equals(
             CalendarPane.PROPERTY_NAME_SHOW_TODAY_BTN)) {
       Boolean value = (Boolean) evt.getNewValue();
-      auxPanel.setShowTodayBtn(value.booleanValue());
+      auxPanel.setShowTodayBtn(value);
     }
     else if (evt.getPropertyName().equals(
             CalendarPane.PROPERTY_NAME_SHOW_NONE_BTN)) {
-      boolean value = ((Boolean) evt.getNewValue()).booleanValue();
+      boolean value = (Boolean) evt.getNewValue();
       auxPanel.setShowNoneButton(value);
     }
     else if (evt.getPropertyName().equals("focusable")) {
       Boolean value = (Boolean) evt.getNewValue();
-      classicPanel.setFocusable(value.booleanValue());
+      classicPanel.setFocusable(value);
       modernPanel.setFocusable(value.booleanValue());
-      gridPanel.setFocusable(value.booleanValue());
-      auxPanel.setFocusable(value.booleanValue());
+      gridPanel.setFocusable(value);
+      auxPanel.setFocusable(value);
     }
     else if (evt.getPropertyName()
             .equals("enabled"/* CalendarPane.PROPERTY_NAME_ENABLED */)) {
@@ -321,8 +321,7 @@ public class BasicCalendarPaneUI extends CalendarPaneUI implements
     }
 
     public void focusLost(FocusEvent e) {
-      boolean isFocusableComponent = focusableComponents.contains(e
-              .getSource());
+      @SuppressWarnings("SuspiciousMethodCalls") boolean isFocusableComponent = focusableComponents.contains(e.getSource());
       boolean isNonEmptyOpposite = e.getOppositeComponent() != null;
       if (isFocusableComponent
               && isNonEmptyOpposite

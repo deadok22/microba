@@ -35,7 +35,7 @@ class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener 
 
   private Date currentDate;
 
-  private Set focusableComponents = new HashSet();
+  private Set<JComponent> focusableComponents = new HashSet<JComponent>();
 
   private VetoPolicy vetoModel;
 
@@ -96,8 +96,8 @@ class AuxPanel extends JPanel implements PropertyChangeListener, PolicyListener 
   public void propertyChange(PropertyChangeEvent evt) {
     if (evt.getPropertyName().equals("focusable")) {
       Boolean value = (Boolean) evt.getNewValue();
-      todayButton.setFocusable(value.booleanValue());
-      noneButton.setFocusable(value.booleanValue());
+      todayButton.setFocusable(value);
+      noneButton.setFocusable(value);
     }
     if (evt.getPropertyName().equals("enabled")) {
       Boolean value = (Boolean) evt.getNewValue();

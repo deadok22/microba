@@ -16,8 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.util.*;
 
-public class BasicCalendarPaneUI extends CalendarPaneUI implements
-        PropertyChangeListener, FocusListener {
+public class BasicCalendarPaneUI extends CalendarPaneUI implements PropertyChangeListener, FocusListener {
 
   protected static final String ESCAPE_KEY = "##CalendarPaneUI.escape##";
 
